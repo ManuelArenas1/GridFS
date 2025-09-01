@@ -1,0 +1,37 @@
+syntax = "proto3";
+
+package gridfs;
+
+// Mensajes básicos
+message RegisterRequest {
+  string host = 1;
+  uint32 data_port = 2;
+  uint64 capacity = 3;
+}
+
+message RegisterResponse {
+  string datanode_id = 1;
+  bool success = 2;
+}
+
+message GetPlanRequest {
+  string filename = 1;
+  uint64 filesize = 2;
+}
+
+message BlockAssignment {
+  string block_id = 1;
+  string host = 2;
+  uint32 data_port = 3;
+  uint64 size = 4;
+}
+
+message GetPlanResponse {
+  repeated BlockAssignment assignments = 1;
+}
+
+// Servicio NameNode
+service NameNode {
+  rpc RegisterDataNode(RegisterRequest) returns (RegisterResponse);
+  rpc GetPlan(GetPlanRequest) returns (GetPlanResponse);
+}
